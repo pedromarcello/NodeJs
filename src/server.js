@@ -18,7 +18,7 @@ mongoose.connect("mongodb+srv://oministack:oministack@cluster0-jtvab.mongodb.net
 
 app.use((req,res,next)=>{
     req.io=io;
-    return next();
+    return next()
 });
 
 app.use(express.json());
