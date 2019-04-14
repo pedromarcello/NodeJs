@@ -1,19 +1,24 @@
-const express = require('express')
-const mongoose = require('mongoose')
-const path = require('path')
-const cors = require('cors')
+const express = require('express');
+const mongoose = require('mongoose');
+const path = require('path');
+const http = require('http');
+const socket = require('socket.io');
+const cors = require('cors');
 
-const app = express()
+const app = express();
 
-const server = require('http').Server(app)
-const io = require('socket.io')(server)
+app.use(cors());
 
+const server = http.Server(app);
+const io = socket(server);
 
 io.on('connection', socket => {
-    socket.on('connectRoom', box => {
-        socket.join(box)
-    })
-})
+    socket.on('connectionRoom', box => {
+        socket.join(box);
+    });
+    console.log('OK');
+});
+
 
 mongoose.connect("mongodb+srv://oministack:oministack@cluster0-jtvab.mongodb.net/test?retryWrites=true",{
     useNewUrlParser: true,
@@ -22,17 +27,16 @@ mongoose.connect("mongodb+srv://oministack:oministack@cluster0-jtvab.mongodb.net
 
 
 app.use((req, res, next) => {
-    req.io = io
-    return next()
-})
+    req.io = io;
 
-app.use(cors())
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
-app.use('/files', express.static(path.resolve(__dirname, "..", 'tmp')))
+    return next();
+});
 
-app.use(require('./routes'))
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use('/files', express.static(path.resolve(__dirname, '..', 'tmp')));
 
+app.use(require('./routes'));
 
-
-server.listen(process.env.PORT || 3333)
+server.listen(process.env.PORT || 3333);
+ 

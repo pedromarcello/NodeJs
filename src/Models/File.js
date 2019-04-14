@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const File = new mongoose.Schema({
     title: {
         type: String,
-        require: true,
+        require: true
     },
     path: {
         type: String,
@@ -11,14 +11,14 @@ const File = new mongoose.Schema({
     }
 }, {
         timestamps: true,
-        toObjects: {virtuals: true},
+        toObject: {virtuals: true},
         toJSON:{virtuals: true}
     });
 
-File.virtual('url').get(function(){
-    const url = process.env.URL || 'http://localhost:3333'
+    File.virtual('url').get(function(){
+         const url = process.env.URL || 'http://localhost:3333'
 
-    return `${url}/Files/${encodeURIComponent(this.path)}`;
+         return `${url}/files/${encodeURIComponent(this.fileName)}`;
 
 })
 module.exports = mongoose.model('File', File);
