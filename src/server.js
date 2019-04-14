@@ -15,8 +15,9 @@ io.on('connection', socket => {
     })
 })
 
-mongoose.connect("mongodb+srv://oministack:oministack@cluster0-jtvab.mongodb.net/boxes?retryWrites=true",{
+mongoose.connect("mongodb+srv://oministack:oministack@cluster0-jtvab.mongodb.net/test?retryWrites=true",{
     useNewUrlParser: true,
+    
 })
 
 
